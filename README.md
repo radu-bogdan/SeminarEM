@@ -20,6 +20,12 @@ materials will be specified below.
 
 ## Model specifications
 
+<div align="center"><img src="https://raw.githubusercontent.com/radu-bogdan/SeminarEM/main/geometry.png" width="500" height="500">
+
+<b>Figure [1] - Geometry of the motor</b>
+</div>
+
+
 Let us describe the exact geometry, see Figure [1], which is comprised of several materials:
 
 -   16 permanent magnets $\Omega_{M_i}$, depicted by the blue areas
