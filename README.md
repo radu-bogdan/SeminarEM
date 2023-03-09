@@ -60,7 +60,7 @@ We use matlab notation to explain the main data provided:
          regions_2d ... cell array with subdomain descriptinos
          regions_1d ... cell array with boundary desciptions
          j3         ... 1 x ncoils array with current densities
-         m          ... 2 x nmagnets array wiht permagnet magnetization values
+         m          ... 2 x nmagnets array with (per magnet) magnetization values
          
 ## Questions? Found any mistakes?
 Come to my office, you know where to find me!
