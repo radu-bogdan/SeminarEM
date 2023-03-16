@@ -1,5 +1,5 @@
 
-# <div align="center">Seminar "Simulation of electrical machines" <br> SoSe 23 <br> v1.0</div>
+# <div align="center">Seminar "Simulation of electrical machines" <br> SoSe 23 <br> v1.1</div>
 
 
 ## Model problem
@@ -64,6 +64,9 @@ We use matlab notation to explain the main data provided:
          
 ## Questions? Found any mistakes?
 Come to my office, you know where to find me!
+
+## List of changes
+    v1.1 : updated magnetization values
 
 ## Bibliography
 
