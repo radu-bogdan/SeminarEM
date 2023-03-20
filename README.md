@@ -1,5 +1,5 @@
 
-# <div align="center">Seminar "Simulation of electrical machines" <br> SoSe 23 <br> v1.1</div>
+# <div align="center">Seminar "Simulation of electrical machines" <br> SoSe 23 <br> v1.2</div>
 
 
 ## Model problem
@@ -50,6 +50,10 @@ Also check Peter's thesis [@Gangl2017 Chapter 2] for a detailed description; a g
 
 The geometry information and the exact values of the right-hand sides are given in this repository and are available for either $\texttt{Python}$, $\texttt{Matlab}$ or $\texttt{NGSolve}$. Go to <https://www.radubogdan.de/fem/motor.html> if you wish to look at the geometry (and the mesh) in more detail.
 
+## Solution of the vector potential formulation
+
+My solution to the vector potential formulation can be viewed here: https://www.radubogdan.de/fem/solution_magnetostatics.html. You can compare point evaluations to check if you obtained the same answer.
+
 ## Data format
 
 We use matlab notation to explain the main data provided:
@@ -66,6 +70,8 @@ We use matlab notation to explain the main data provided:
 Come to my office, you know where to find me!
 
 ## List of changes
+    v1.2 : added geometry files for $\texttt{Matlab}$ (Thank you Josef) and an IGS format
+           added solution to the magnetostatic problem for comparison
     v1.1 : updated magnetization values
 
 ## Bibliography
