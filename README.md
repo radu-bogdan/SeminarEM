@@ -70,9 +70,9 @@ We use matlab notation to explain the main data provided:
 Come to my office, you know where to find me!
 
 ## List of changes
-    v1.2 : added geometry files for $\texttt{Matlab}$ (Thank you Josef) and an IGS format
-           added solution to the magnetostatic problem for comparison
-    v1.1 : updated magnetization values
+v1.2 : added geometry files for $\texttt{Matlab}$ (Thank you Josef) and an IGS format
+       added solution to the magnetostatic problem for comparison
+v1.1 : updated magnetization values
 
 ## Bibliography
 
