@@ -1,4 +1,4 @@
-function [F1,F2] = Assemble_F_Vec(p,t,e,uh,B,m,material)
+function [F1,F2] = Assemble_F_Vec(p,t,e,uh,B,g_grad_val,m,material)
 % [R,N] = assemr_fast(p,e,d,h)
 %    assemble Robin matrix and Neumann vector
 %    for details see assemr_tb
@@ -25,9 +25,6 @@ ii=[e1;e2]; % row indices
 F1 = accumarray(ii(:),elvecs(:),[np,1]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[duhx,duhy] = pdegrad(p,t,uh);
-grad_uh = [duhx;duhy];
-g_grad_val = grad_g(t(4,:),grad_uh,material);
 g_grad_valx = g_grad_val(1,:);
 g_grad_valy = g_grad_val(2,:);
 elvecs = zeros(3,nt);                            % element vector

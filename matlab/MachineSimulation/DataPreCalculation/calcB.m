@@ -20,8 +20,6 @@ B21e = p2(2,:)-p1(2,:);
 B.len = sqrt(B11e.^2+B21e.^2);
 
 dphih1=[-1;-1]; dphih2=[1;0]; dphih3=[0;1];
-B.iB11= B.B22./B.detB; B.iB12=-B.B12./B.detB; 
-B.iB21=-B.B21./B.detB; B.iB22= B.B11./B.detB; 
 B.dphi1x= B.iB11*dphih1(1) + B.iB21*dphih1(2);   B.dphi1y= B.iB12*dphih1(1)+ B.iB22*dphih1(2);
 B.dphi2x= B.iB11*dphih2(1) + B.iB21*dphih2(2);   B.dphi2y= B.iB12*dphih2(1)+ B.iB22*dphih2(2);
 B.dphi3x= B.iB11*dphih3(1) + B.iB21*dphih3(2);   B.dphi3y= B.iB12*dphih3(1)+ B.iB22*dphih3(2);

@@ -1,10 +1,6 @@
-function [N] = Assemble_Newton_Matrix(p,t,uh,B,material)
+function [N] = Assemble_Newton_Matrix(p,t,uh,B,hessian,material)
 nt=size(t,2); np=size(p,2);
 t1=t(1,:); t2=t(2,:); t3=t(3,:);
-grad_uh_ref =  [uh(t2) - uh(t1), uh(t3) - uh(t1)]';
-grad_uh = [B.iB11.*grad_uh_ref(1,:) + B.iB21.*grad_uh_ref(2,:); B.iB12.*grad_uh_ref(1,:) + B.iB22.*grad_uh_ref(2,:)];
-       
-hessian = hessian_g(t(4,:),grad_uh,material);
     
 elmats = zeros(9,nt);          % every colum contains matrix for one element
 w=[1/2];
