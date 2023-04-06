@@ -13,11 +13,14 @@ e4 = eI2(1,:); e3 = eI2(2,:);
 p1 = p(:,e1); p2 = p(:,e2);
 p3 = p(:,e3); p4 = p(:,e4);
 
+% calculate angle of points
 p1theta = cart2pol(p1(1,:),p1(2,:));
 p2theta = cart2pol(p2(1,:),p2(2,:));
 p3theta = cart2pol(p3(1,:),p3(2,:));
 p4theta = cart2pol(p4(1,:),p4(2,:));
 
+% There is a problem if one of the two points of an edge has an angle close
+% to -pi and the other close to pi. The following code resolves that.
 for i = 1:2
     if i == 1
         pi_term = 2*pi;
@@ -31,7 +34,7 @@ for i = 1:2
     p4theta(recalc) = mod(p4theta(recalc)+pi_term,2*pi);
 end
 
-
+% checking if edges is intersecting
 k = 1; % index for eI
 for i = 1:neI1
     
@@ -82,7 +85,7 @@ for i = 1:neI1
     
             % if the two new edge points are too close, do not consider it
             % as an element
-            if abs(lambda1-lambda2) > 1e-14
+            if abs(lambda1-lambda2) > 1e-15
                 k = k+1;
             end
         end

@@ -11,10 +11,6 @@
 clear;
 
 %% loading data
-% -----------------------------------------------------------------------
-% If the data in DataPreCalculation/motor.mat changed, you have to rerun
-% DataPreCalculation/CreateData.m !!!!
-% -----------------------------------------------------------------------
 addpath(genpath('DataPreCalculation'));
 addpath(genpath('Material'));
 addpath(genpath('Plotting'));
@@ -22,19 +18,18 @@ addpath(genpath('Assemble'));
 addpath(genpath('Linesearch'));
 addpath(genpath('Meshing'));
 load -mat motor_divided.mat % datastructure with double amount of points on the interface.
-load -mat J3_vec.mat
-load -mat M_vec.mat
-load -mat material.mat
-load -mat e_stator_outer.mat
+
+% [p,e,t] = refinemesh(p,e,t,zeros(length(p),1));
+CreateData; % calls script, needs about 0.5 s
 
 
 %% settings
-gamma = 10^5; % penalty for dirichlet boundary condition
-Nitsche_pen = 1e7; %penalty factor for Nitsche-type mortaring
-num_iteration = 50; %max number of iterations for newton method
+gamma = 1e5; % penalty for dirichlet boundary condition
+Nitsche_pen = 5e6; %penalty factor for Nitsche-type mortaring
+num_iteration = 30; %max number of iterations for newton method
 eps = 10^-4; % tolerance for abortion criterium
-J3_vec = 0*J3_vec; % with or without current (comment out: with current)
-nRot = 32; % nRot rotations with angle 2pi/nRot
+% J3_vec = 0*J3_vec; % with or without current (comment out: with current)
+nRot = 128; % nRot rotations with angle 2pi/nRot
 
 
 %% finding points of rotor
@@ -57,30 +52,29 @@ np=size(p,2); nt=size(t,2); ne = size(e,2);
 uh = zeros(np,1);        %initialize solution
 
 % variable for creating animation afterwards
-anim(nRot) = struct('cdata',[],'colormap',[]);
-angle_ref = 2*pi/nRot;
+animField(nRot) = struct('cdata',[],'colormap',[]);
+animPotential(nRot) = struct('cdata',[],'colormap',[]);
+angle_ref = 2*pi/nRot/4;
 for i = 1:nRot
     tic
     % rotating rotor
     angle = angle_ref*(i-1);
     Rot = [cos(angle), -sin(angle); sin(angle), cos(angle)];
     p(:,p_rotor_ind) = Rot*p_rotor_ref;
-    
-    % calculating the edges on the interface between rotor and stator
+ 
+    % calculating the edges on the interface between rotor and stator.
+    % Needs about 0.03 s for calculating. Efficiency could be improved if
+    % necessary
     eI = calcEdgeInterfaceCircle(p,eI1,eI2,t);
     
     M_vec = Rot*M_vec_ref;
-    
-    %plot mesh
-    % figure
-%     h = plotMesh(p,t,e,material);
-%     set(h, 'LineStyle', 'none');
              
     
     %Caculate constant Matrices for iteration
     B = calcB(p,t,e);
     R_mat = Assemble_Robin_Matrix(p,e,B);      %calculate Robin Matrix
     
+    % Interface matrices
     [S1,S2] = Assemble_Interface_Matrices(p,eI,t,material.nu0,Nitsche_pen);
     % symmetric Nitsche-type mortaring
     S = S1 - S2 - S2';
@@ -106,8 +100,9 @@ for i = 1:nRot
         F = J_vec - gamma*F1_vec - F2_vec - Suh;
         A = N_mat + gamma*R_mat + S;
         wh = A\F;
+        
         alpha = alpha*2;
-        phi = @(alpha) Functional_Nitsche(t,uh + alpha*wh,gamma,J_j,J_m,F1_vec,Suh,material,B);
+        phi = @(alpha) Functional_Nitsche(t,uh + alpha*wh,gamma,J_j,J_m,F1_vec,S,material,B);
         phi_der0 = Functional_der0_Nitsche(wh,gamma,J_j,J_m,F1_vec,F2_vec,Suh,material);
     
         
@@ -120,37 +115,32 @@ for i = 1:nRot
         if res < eps*res0
             break;
         end
-    % alternative abortion criteria
-    %     if max(abs(wh))/max(abs(uh)) < eps
-    %         break;
-    %     end
-%     fprintf('Newton Iteration %d: energy=%d, alpha=%d\n',iter,energy,alpha);
+    fprintf('Newton Iteration %d: energy=%d, alpha=%d\n',iter,energy,alpha);
     end
     fprintf('Summary:\n')
     toc;
     fprintf('Newton Iterations: %d\n',iter);
     
     [ux,uy] = pdegrad(p,t,uh);
-    B = [ux;uy];
-    t1 = t;
-    t1(4,:) = t(4,:) + ones(1,nt);
     % figure
     % h = plotMesh(p,t,e,material);
     % set(h, 'LineStyle', 'none');
     % hold on
     % pdeplot(p,e,t1,'FlowData',[uy;-ux]);
     
-    % B = [uy;-ux];
-    % Babs = sqrt(B(1,:).^2 +  B(2,:).^2);
-    % figure
-    % pdesurf(p,t,Babs);
-    % colorbar
-    % title('Magnetic Flux |B| [T]')
-    % colormap jet
-    % view([-0.83 90.00])
-    
-    
+    B = [uy;-ux];
+    Babs = sqrt(B(1,:).^2 +  B(2,:).^2);
+
+    pdesurf(p,t,Babs);
+    colorbar
+    title('Magnetic Flux |B| [T]')
+    colormap jet
+    view([0 90.00])
+    animField(i) = getframe(gcf);
+
+
     pdeplot(p,e,t,'XYData',uh,Contour="on",ColorMap="jet")
+%     patch('faces',t(1:3,MagnetPos)','vertices',p','facecolor','red','edgecolor','red')
     % adding new frame to animation
-    anim(i) = getframe(gcf);
+    animPotential(i) = getframe(gcf);
 end

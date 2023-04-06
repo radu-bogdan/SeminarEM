@@ -40,8 +40,11 @@ for i = 1:neI1
         e4 = eI2(1,j); e3 = eI2(2,j); 
         p3 = p(:,e3); p4 = p(:,e4);
 
+        % calculate angle of points
         ptheta = cart2pol([p1(1),p2(1),p3(1),p4(1)], [p1(2),p2(2),p3(2),p4(2)]);
-
+        
+        % There is a problem if one of the two points of an edge has an angle close
+        % to -pi and the other close to pi. The following code resolves that.
         if abs(ptheta(1) - ptheta(2)) > pi || abs(ptheta(3) - ptheta(4)) > pi
             ptheta = mod(ptheta+2*pi,2*pi);
             if abs(ptheta(1) - ptheta(2)) > pi || abs(ptheta(3) - ptheta(4)) > pi
@@ -93,7 +96,7 @@ for i = 1:neI1
     
             % if the two new edge points are too close, do not consider it
             % as an element
-            if abs(lambda1-lambda2) > 1e-14
+            if abs(lambda1-lambda2) > 1e-15
                 k = k+1;
             end
         end
