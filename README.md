@@ -3,4 +3,4 @@
 
 * [1. Solving nonlinear magnetostatics](https://github.com/radu-bogdan/SeminarEM/wiki/Solving-nonlinear-magnetostatics)
 * [2. Spinning the rotor](https://github.com/radu-bogdan/SeminarEM/wiki/Spinning-the-rotor)
-* [3. Torque computation](https://github.com/radu-bogdan/SeminarEM/wiki/Torque-computation)
+* [3. Maxwell stress tensor derivation](https://github.com/radu-bogdan/SeminarEM/wiki/Maxwell-Stress-tensor-derivation)
